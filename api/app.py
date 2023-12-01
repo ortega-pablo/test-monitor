@@ -14,17 +14,17 @@ cap = cv2.VideoCapture(0)
 thread = None
 
 def apply_sepia(frame):
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    sepia = np.array([[0.393, 0.769, 0.189],
-                      [0.349, 0.686, 0.168],
-                      [0.272, 0.534, 0.131]])
+    sepia_frame = cv2.transform(frame, np.array([[0.393, 0.769, 0.189],
+                                                 [0.349, 0.686, 0.168],
+                                                 [0.272, 0.534, 0.131]]))
 
-    sepia_frame = cv2.transform(gray, sepia)
+    # Asegurarse de que los valores estén en el rango adecuado
     sepia_frame[np.where(sepia_frame > 255)] = 255
     sepia_frame = sepia_frame.astype(np.uint8)
-    sepia_frame = cv2.cvtColor(sepia_frame, cv2.COLOR_GRAY2BGR)
 
     return sepia_frame
+
+
 
 def video_stream():
     while True:
@@ -59,4 +59,4 @@ def start_stream():
         print('Video streaming started...')
 
 if __name__ == '__main__':
-    socketio.run(app, host='192.168.100.9', port=5000, debug=True)
+    socketio.run(app, host='0.0.0.0', port=5000, debug=True)
